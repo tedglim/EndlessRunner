@@ -29,7 +29,8 @@ public class GameManagerScript : MonoBehaviour
         Invoke("ShowGameOver", 1.0f);
     }
 
-    void ShowGameOver() {
+    void ShowGameOver()
+    {
         scoreText.gameObject.SetActive(false);
         if(score > PlayerPrefs.GetInt("Best", 0))
         {
@@ -40,7 +41,13 @@ public class GameManagerScript : MonoBehaviour
         gameOverPanel.SetActive(true);
     }
 
-    public void Restart() {
+    public void Restart()
+    {
+        SceneManager.LoadSceneAsync(1);
+    }
+
+    public void Menu()
+    {
         SceneManager.LoadSceneAsync(0);
     }
 }
