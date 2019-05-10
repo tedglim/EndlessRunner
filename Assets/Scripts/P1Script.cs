@@ -40,11 +40,11 @@ public class P1Script : MonoBehaviour
         {
             rb2d.AddForce(Vector2.up * jumpForce);
         }
-        wantsJump = false;
         if (rb2d.velocity.y < 0)
         {
             rb2d.velocity += Vector2.up * Physics2D.gravity.y * fallMultiplier * Time.deltaTime;
         }
+        wantsJump = false;
     }
 
     void GameOver()

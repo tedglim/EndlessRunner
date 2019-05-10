@@ -342,7 +342,7 @@ GameObject:
   - component: {fileID: 296430556}
   - component: {fileID: 296430555}
   - component: {fileID: 296430557}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BaseGround
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -763,7 +763,7 @@ GameObject:
   - component: {fileID: 881687964}
   - component: {fileID: 881687963}
   - component: {fileID: 881687962}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ceiling
   m_TagString: Ground
   m_Icon: {fileID: 0}
