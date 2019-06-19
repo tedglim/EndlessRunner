@@ -1,13 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EZCameraShake;
 
 public class P1Script : MonoBehaviour
 {
     Rigidbody2D rb2d;
     public float jumpForce = 750f;
     public float fallMultiplier = 2.5f;
-    private bool isGrounded;
+    private bool isGroundedL;
+    private bool isGroundedR;
+    public Transform stageCheckL;
+    public Transform stageCheckR;
+    public float checkRadiusL;
+    public float checkRadiusR;
+    public LayerMask whatIsStage;
+
     private bool wantsJump;
     private bool isGameOver = false;
     private float posX;
@@ -27,6 +35,7 @@ public class P1Script : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             wantsJump = true;
+            CheckGrounded();
         }
         if (transform.position.x < posX)
         {
@@ -34,9 +43,19 @@ public class P1Script : MonoBehaviour
         }
     }
 
+    void CheckGrounded()
+    {
+        isGroundedL = Physics2D.OverlapCircle(stageCheckL.position, checkRadiusL, whatIsStage);
+        isGroundedR = Physics2D.OverlapCircle(stageCheckR.position, checkRadiusR, whatIsStage);
+    }
+
     void FixedUpdate()
     {
-        if(wantsJump && isGrounded == true && !isGameOver)
+        if(isGameOver)
+        {
+            return;
+        }
+        if(wantsJump && (isGroundedL || isGroundedR) && !isGameOver)
         {
             rb2d.AddForce(Vector2.up * jumpForce);
         }
@@ -53,22 +72,6 @@ public class P1Script : MonoBehaviour
         obstacleController.GameOver();
     }
 
-    void OnCollisionEnter2D (Collision2D collision)
-    {
-        if(collision.collider.tag == "Ground")
-        {
-            isGrounded = true;
-        }
-    }
-
-    void OnCollisionExit2D (Collision2D collision)
-    {
-        if(collision.collider.tag == "Ground")
-        {
-            isGrounded = false;
-        }
-    }
-
     void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.tag == "Coin")
@@ -77,7 +80,15 @@ public class P1Script : MonoBehaviour
             Destroy(collider.gameObject);
         } else if (collider.tag == "Spike")
         {
+            CameraShaker.Instance.ShakeOnce(2f, 3f, .1f, .5f);
             GameOver();
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(stageCheckL.position, checkRadiusL);
+        Gizmos.DrawWireSphere(stageCheckR.position, checkRadiusR);
     }
 }
